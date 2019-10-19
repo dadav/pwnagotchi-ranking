@@ -125,7 +125,10 @@ def main():
 
     for unit in top_units:
         text = f"{unit.name}: {unit.get(args.key)}"
-        line_width = int(term_columns) / int(max_value) * int(unit.get(args.key))
+        unit_value = unit.get(args.key)
+        if not unit_value:
+            continue
+        line_width = int(term_columns) / int(max_value) * int(unit_value)
         padding_len = int(line_width) - len(text)
         if padding_len > 0:
             padding = " " * padding_len
