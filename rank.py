@@ -96,6 +96,8 @@ def is_number(s):
         complex(s) # for int, long, float and complex
     except ValueError:
         return False
+    except TypeError:
+        return False
 
     return True
 
@@ -106,7 +108,6 @@ def main():
     parser.add_argument('--list', action="store_true", help="List the keys you could use for sorting")
     args = parser.parse_args()
 
-    print("Fetching units...")
     if args.list:
         units = get_units(max_cnt=1)
         all_keys = units[0].keys()
@@ -115,6 +116,7 @@ def main():
                 print(key)
         return 0
 
+    print("Fetching units...")
     units = get_units()
     top_units = _sort_units_by(units, sort_key=args.key)[:args.max]
     _, term_columns = os.popen('stty size', 'r').read().split()
