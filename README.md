@@ -9,3 +9,8 @@
 # top units sorted by deauths
 ./rank.py --max 10 --key data_deauthed
 ```
+
+## example
+`./rank.py --max 10 --key networks`
+
+![Example](images/example.png)
