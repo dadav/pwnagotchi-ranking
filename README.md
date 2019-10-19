@@ -10,6 +10,7 @@ data_session_max_reward
 data_session_min_reward
 data_session_peers
 data_session_train_epochs
+networks
 
 # top units sorted by captured networks
 ./rank.py --max 10 --key networks
