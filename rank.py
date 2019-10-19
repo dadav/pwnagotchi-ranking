@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+from re import escape
 from collections.abc import MutableMapping
 import argparse
 import requests
@@ -124,10 +125,10 @@ def main():
     max_value = top_units[0][args.key]
 
     for unit in top_units:
-        text = f"{unit.name}: {unit.get(args.key)}"
         unit_value = unit.get(args.key)
         if not unit_value:
             continue
+        text = f"{unit.name}: {unit_value}"
         line_width = int(term_columns) / int(max_value) * int(unit_value)
         padding_len = int(line_width) - len(text)
         if padding_len > 0:
@@ -135,7 +136,7 @@ def main():
         else:
             padding = ""
 
-        print(f"{Termcolors.BG_GREEN}{Termcolors.FG_BLACK}{unit.name}: {unit.get(args.key)}{padding}{Termcolors.CLEAR}")
+        print(f"{Termcolors.BG_GREEN}{Termcolors.FG_BLACK}{escape(unit.name)}: {escape(str(unit_value))}{padding}{Termcolors.CLEAR}")
 
 
 if __name__ == "__main__":
