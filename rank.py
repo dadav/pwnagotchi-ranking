@@ -107,6 +107,7 @@ def main():
     parser.add_argument('--max', type=int, default=10, help="Max number of units")
     parser.add_argument('--key', default="networks", help="What key should be used for sorting")
     parser.add_argument('--list', action="store_true", help="List the keys you could use for sorting")
+    parser.add_argument('--units', action="store_true", help="List units and their idents")
     args = parser.parse_args()
 
     if args.list:
@@ -118,6 +119,18 @@ def main():
         return 0
 
     print("Fetching units...")
+
+    if args.units:
+        units = get_units(max_cnt=args.max)
+        for unit in units:
+            ident = unit.get('data_advertisement_identity')
+            if not ident:
+                continue
+            print(f"{escape(unit.name)}: {escape(str(ident))}")
+        return 0
+
+
+
     units = get_units()
     top_units = _sort_units_by(units, sort_key=args.key)[:args.max]
     _, term_columns = os.popen('stty size', 'r').read().split()
@@ -128,7 +141,7 @@ def main():
         unit_value = unit.get(args.key)
         if not unit_value:
             continue
-        text = f"{unit.name}: {unit_value}"
+        text = f"{escape(unit.name)}: {escape(str(unit_value))}"
         line_width = int(term_columns) / int(max_value) * int(unit_value)
         padding_len = int(line_width) - len(text)
         if padding_len > 0:
@@ -136,7 +149,7 @@ def main():
         else:
             padding = ""
 
-        print(f"{Termcolors.BG_GREEN}{Termcolors.FG_BLACK}{escape(unit.name)}: {escape(str(unit_value))}{padding}{Termcolors.CLEAR}")
+        print(f"{Termcolors.BG_GREEN}{Termcolors.FG_BLACK}{text}{padding}{Termcolors.CLEAR}")
 
 
 if __name__ == "__main__":
